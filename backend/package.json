@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "import-data": "node scripts/importData.js",
+    "clean-data": "node scripts/cleanData.js"
   },
   "keywords": [],
   "author": "",
