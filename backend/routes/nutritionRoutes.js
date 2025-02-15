@@ -1,11 +1,12 @@
-const express = require('express');
-const authenticateToken = require('../midddlewares/authenticateToken.js');
-const { getPublicNutritionInfo,
+const express = require("express");
+const authenticateToken = require("../midddlewares/authenticateToken.js");
+const {
+  getPublicNutritionInfo,
   getPrivateNutritionInfo,
   addProductToDailyIntake,
   deleteProductFromDailyIntake,
-  getDailyIntakeInfo
-} = require('../controllers/nutritionController');
+  getDailyIntakeInfo,
+} = require("../controllers/nutritionController");
 
 const router = express.Router();
 
@@ -13,42 +14,42 @@ const router = express.Router();
  * @swagger
  * /api/nutrition/public:
  *   get:
- *     summary: Obține informații publice despre nutriție
- *     description: Permite obținerea informațiilor publice despre nutriție, fără a necesita autentificare.
+ *     summary:  Get public nutrition information
+ *     description:  Allows retrieving public nutrition information without requiring authentication.
  *     responses:
  *       200:
- *         description: Informațiile nutriționale publice
+ *         description:  Public nutrition information
  *       500:
- *         description: Eroare server
+ *         description: Server error
  */
 
-router.get('/public', getPublicNutritionInfo);
+router.get("/public", getPublicNutritionInfo);
 
 /**
  * @swagger
  * /api/nutrition/private:
  *   get:
- *     summary: Obține informații private despre nutriție
- *     description: Permite obținerea informațiilor despre nutriție pentru utilizatori autentificați.
+ *     summary: Get private nutrition information
+ *     description: Allows authenticated users to retrieve private nutrition information.
  *     security:
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description: Informațiile nutriționale private
+ *         description:  Private nutrition information
  *       401:
- *         description: Token de autentificare invalid
+ *         description: Invalid authentication token
  *       500:
- *         description: Eroare server
+ *         description:  Server error
  */
 
-router.get('/private', authenticateToken, getPrivateNutritionInfo);
+router.get("/private", authenticateToken, getPrivateNutritionInfo);
 
 /**
  * @swagger
  * /api/nutrition/add-product:
  *   post:
- *     summary: Adaugă un produs în aportul zilnic
- *     description: Permite utilizatorilor autentificați să adauge un produs în aportul zilnic de nutriție.
+ *     summary: Add a product to daily intake
+ *     description:  Allows authenticated users to add a product to their daily nutrition intake.
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -60,28 +61,28 @@ router.get('/private', authenticateToken, getPrivateNutritionInfo);
  *             properties:
  *               productId:
  *                 type: string
- *                 description: ID-ul produsului adăugat
+ *                 description: ID of the added product
  *               quantity:
  *                 type: number
- *                 description: Cantitatea consumată
+ *                 description:Consumed quantity
  *     responses:
  *       201:
- *         description: Produs adăugat cu succes
+ *         description: Product successfully added
  *       400:
- *         description: Cerere invalidă
+ *         description: Invalid request
  *       401:
- *         description: Token de autentificare invalid
+ *         description:  Invalid authentication token
  *       500:
- *         description: Eroare server
+ *         description: Server error
  */
-router.post('/add-product', authenticateToken, addProductToDailyIntake);
+router.post("/add-product", authenticateToken, addProductToDailyIntake);
 
 /**
  * @swagger
  * /api/nutrition/delete-product:
  *   delete:
- *     summary: Șterge un produs din aportul zilnic
- *     description: Permite utilizatorilor autentificați să șteargă un produs din aportul zilnic de nutriție.
+ *     summary: Delete a product from daily intake
+ *     description: Allows authenticated users to delete a product from their daily nutrition intake.
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -93,45 +94,49 @@ router.post('/add-product', authenticateToken, addProductToDailyIntake);
  *             properties:
  *               productId:
  *                 type: string
- *                 description: ID-ul produsului care trebuie șters
+ *                 description: ID of the product to be deleted
  *     responses:
  *       200:
- *         description: Produs șters cu succes
+ *         description: Product successfully deleted
  *       400:
- *         description: Cerere invalidă
+ *         description: Invalid request
  *       401:
- *         description: Token de autentificare invalid
+ *         description: Invalid authentication token
  *       500:
- *         description: Eroare server
+ *         description: Server error
  */
-router.delete('/delete-product', authenticateToken, deleteProductFromDailyIntake);
+router.delete(
+  "/delete-product",
+  authenticateToken,
+  deleteProductFromDailyIntake
+);
 
 /**
  * @swagger
  * /api/nutrition/daily/{date}:
  *   get:
- *     summary: Obține informații despre aportul zilnic
- *     description: Permite utilizatorilor autentificați să obțină informații despre aportul zilnic de nutriție, pe baza datei.
+ *     summary:Get daily intake information
+ *     description: Allows authenticated users to retrieve information about their daily nutrition intake based on the specified date.
  *     security:
  *       - bearerAuth: []
  *     parameters:
  *       - name: date
  *         in: path
  *         required: true
- *         description: Data pentru care se obțin informațiile despre aportul zilnic
+ *         description: Date for which daily intake information is retrieved
  *         schema:
  *           type: string
  *           example: '2025-02-09'
  *     responses:
  *       200:
- *         description: Informațiile aportului zilnic
+ *         description:  Daily intake information
  *       400:
- *         description: Cerere invalidă
+ *         description: Invalid request
  *       401:
- *         description: Token de autentificare invalid
+ *         description: Invalid authentication token
  *       500:
- *         description: Eroare server
+ *         description: Server error
  */
-router.get('/daily/:date', authenticateToken, getDailyIntakeInfo);
+router.get("/daily/:date", authenticateToken, getDailyIntakeInfo);
 
 module.exports = router;

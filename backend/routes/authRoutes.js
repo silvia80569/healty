@@ -6,15 +6,14 @@ const {
 } = require("../controllers/authController");
 const authenticateToken = require("../midddlewares/authenticateToken.js");
 
-
 const router = express.Router();
 
 /**
  * @swagger
  * /api/auth/register:
  *   post:
- *     summary: Înregistrare utilizator
- *     description: Permite unui utilizator să se înregistreze în aplicație.
+ *     summary: User registration
+ *     description:  Allows a user to register in the application.
  *     requestBody:
  *       required: true
  *       content:
@@ -28,9 +27,9 @@ const router = express.Router();
  *                 type: string
  *     responses:
  *       201:
- *         description: Utilizator înregistrat cu succes
+ *         description: User successfully registered
  *       400:
- *         description: Cerere invalidă
+ *         description: Invalid request
  */
 
 router.post("/register", registerUser);
@@ -39,8 +38,8 @@ router.post("/register", registerUser);
  * @swagger
  * /api/auth/login:
  *   post:
- *     summary: Autentificare utilizator
- *     description: Permite unui utilizator să se autentifice în aplicație.
+ *     summary: User authentication
+ *     description: Allows a user to authenticate in the application.
  *     requestBody:
  *       required: true
  *       content:
@@ -54,9 +53,9 @@ router.post("/register", registerUser);
  *                 type: string
  *     responses:
  *       200:
- *         description: Autentificare reușită, token de autentificare returnat
+ *         description: Successful authentication, authentication token returned
  *       401:
- *         description: Date de autentificare invalide
+ *         description: Invalid authentication credentials
  */
 
 router.post("/login", loginUser);
@@ -65,15 +64,15 @@ router.post("/login", loginUser);
  * @swagger
  * /api/auth/logout:
  *   post:
- *     summary: Deconectare utilizator
- *     description: Permite unui utilizator să se deconecteze din aplicație, invalidând token-ul.
+ *     summary: User logout
+ *     description: AlLows a user to log out of the application, invalidating the token.
  *     security:
- *       - bearerAuth: []  // Dacă folosești autentificare pe bază de token
+ *       - bearerAuth: []  // If using token-besed authentication
  *     responses:
  *       200:
- *         description: Utilizator deconectat cu succes
+ *         description: User successfully logged out
  *       401:
- *         description: Utilizator neautentificat
+ *         description: Unauthorized user
  */
 
 router.post("/logout", authenticateToken, logoutUser);

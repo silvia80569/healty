@@ -1,0 +1,29 @@
+.logoContainer {
+  display: flex;
+}
+
+.logoIcon {
+  display: block;
+  margin-right: 5px;
+}
+
+.logoSlim,
+.logoMom{
+  display: inline-block;
+  margin-left: -5;
+}
+
+
+
+/* Mobil */
+@media (max-width: 768px) {
+  .logoSlim,
+  .logoMom {
+    display: none;
+  }
+}
+ 
+.logoIcon{
+  margin: 0;
+}
+

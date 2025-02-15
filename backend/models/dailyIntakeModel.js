@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const dailyIntakeSchema = new mongoose.Schema(
   {
@@ -21,7 +21,7 @@ const dailyIntakeSchema = new mongoose.Schema(
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product', // Referință la modelul Product
+          ref: "Product",
           required: true,
         },
         calories: {
@@ -32,14 +32,13 @@ const dailyIntakeSchema = new mongoose.Schema(
     ],
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Referință la modelul User
+      ref: "User",
       required: true,
     },
   },
   { timestamps: true }
-
 );
 
-const DailyIntake = mongoose.model('DailyIntake', dailyIntakeSchema);
+const DailyIntake = mongoose.model("DailyIntake", dailyIntakeSchema);
 
 module.exports = DailyIntake;
