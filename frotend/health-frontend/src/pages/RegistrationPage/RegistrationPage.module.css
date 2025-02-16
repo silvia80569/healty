@@ -1,0 +1,115 @@
+
+.registration {
+  width: 100%;
+  max-width: 400px;
+  margin:20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #e0e0e0;
+}
+
+.title {
+  font-size: 34px;
+  font-weight: bold;
+  color: #fc842d;
+  margin-top: 120px;
+  text-transform: uppercase;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-bottom: 2px solid #e0e0e0;
+  background: transparent;
+  outline: none;
+  font-size: 16px;
+  color: white;
+}
+
+.input::placeholder {
+  color: transparent;
+}
+
+.input:focus::placeholder {
+  color: #aaa;
+}
+
+.buttonContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.registerButton {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 25px;
+  background: #fc842d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.registerButton:hover {
+  background: #ff9a50;
+}
+
+.loginButton {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #fc842d;
+  border-radius: 25px;
+  background: white;
+  color: #fc842d;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.loginButton:hover {
+  background: #fc842d;
+  color: white;
+}
+
+/* Media Query pentru Tableta */
+@media (min-width: 768px) {
+ 
+
+  .buttonContainer {
+    grid-column: span 2;
+    display: flex;
+    justify-content: center;
+  }
+
+  .registerButton,
+  .loginButton {
+    max-width: 200px;
+  }
+}
+
+/* Media Query pentru Desktop */
+@media (min-width: 1025px) {
+  
+
+  .buttonContainer {
+    justify-content: center;
+  }
+}

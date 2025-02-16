@@ -1,13 +1,43 @@
 import PropTypes from "prop-types";
-const Modal = ({ recommendedCalories, foodsToAvoid, onClose }) => {
-  if (!recommendedCalories) {
-    console.error("recommendedCalories is not valid");
-    return null;
-  }
+import { useState } from "react";
+import styles from "./Modal.module.css";
 
+const Modal = ({ recommendedCalories, foodsToAvoid, onClose }) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleStartLosingWeight = async () => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/save-weight-plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          calories: recommendedCalories,
+          foodsToAvoid,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to save data.");
+      }
+
+      alert("Data saved successfully!");
+
+      onClose();
+    } catch (error) {
+      alert("Error: " + error.message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
-    <div className="modal">
-      <div className="modal-content">
+    <div className={styles.modal}>
+      <div className={styles.modalContent}>
+        <button onClick={onClose} className={styles.closeButton}>
+          X
+        </button>
         <h2>
           Your recommended daily calorie intake is {recommendedCalories} ккал
         </h2>
@@ -17,7 +47,11 @@ const Modal = ({ recommendedCalories, foodsToAvoid, onClose }) => {
             <li key={index}>{food}</li>
           ))}
         </ul>
-        <button onClick={onClose}>Close</button>
+        <div className={styles.buttonContainer}>
+          <button onClick={handleStartLosingWeight} disabled={isSubmitting}>
+            {isSubmitting ? "Saving..." : "Start Losing Weight"}
+          </button>
+        </div>
       </div>
     </div>
   );

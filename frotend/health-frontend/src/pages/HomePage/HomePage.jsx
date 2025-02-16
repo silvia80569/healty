@@ -1,8 +1,8 @@
 import { useState } from "react";
-import Modal from "../Modal/Modal";
-import styles from "./Home.module.css";
+import Modal from "../../components/Modal/Modal";
+import styles from "./HomePage.module.css";
 
-const Home = () => {
+const HomePage = () => {
   const [height, setHeight] = useState("");
   const [currentWeight, setCurrentWeight] = useState("");
   const [age, setAge] = useState("");
@@ -34,6 +34,7 @@ const Home = () => {
   return (
     <>
       <h1>Calculate your daily calorie intake right now</h1>
+
       <form onSubmit={handleSubmit} className={styles.formContainer}>
         <div className={styles.formGroup}>
           <label htmlFor="height">Height *</label>
@@ -46,6 +47,7 @@ const Home = () => {
             className={styles.input}
           />
         </div>
+
         <div className={styles.formGroup}>
           <label htmlFor="age">Age *</label>
           <input
@@ -57,6 +59,7 @@ const Home = () => {
             className={styles.input}
           />
         </div>
+
         <div className={styles.formGroup}>
           <label htmlFor="currentWeight"> Current Weight * </label>
           <input
@@ -68,6 +71,7 @@ const Home = () => {
             className={styles.input}
           />
         </div>
+
         <div className={styles.formGroup}>
           <label htmlFor="desiredWeight"> Desired Weight * </label>
           <input
@@ -76,8 +80,10 @@ const Home = () => {
             placeholder="Enter your weight"
             value={desiredWeight}
             onChange={(e) => setDesiredWeight(e.target.value)}
+            className={styles.input}
           />
         </div>
+
         <div className={styles.formGroup}>
           <label>Blood Type *</label>
           <div className={styles.radioGroup}>
@@ -141,4 +147,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;
