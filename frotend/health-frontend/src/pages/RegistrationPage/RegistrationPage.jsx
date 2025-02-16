@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import styles from "./RegistrationPage.module.css";
 
 const RegistrationPage = () => {
@@ -7,14 +8,17 @@ const RegistrationPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const newUser = { name, email, password };
 
     const registeredUser = await register(newUser);
     if (registeredUser) {
       login(registeredUser);
+      navigate("/login");
     }
   };
 
@@ -30,8 +34,12 @@ const RegistrationPage = () => {
             name="name"
             required
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={(e) => {
+              setName(e.target.value);
+              console.log(name);
+            }}
             className={styles.input}
+            autoComplete="name"
           />
         </div>
         <div className={styles.formGroup}>
@@ -44,6 +52,7 @@ const RegistrationPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             className={styles.input}
+            autoComplete="email"
           />
         </div>
         <div className={styles.formGroup}>
@@ -56,6 +65,7 @@ const RegistrationPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className={styles.input}
+            autoComplete="new-password"
           />
         </div>
         <div className={styles.buttonContainer}>

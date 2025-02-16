@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import styles from "./LoginPage.module.css";
 
 const LoginPage = () => {
@@ -7,13 +8,21 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (email === "test@example.com" && password === "password") {
-      const userData = { email, password };
-      login(userData);
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+
+    if (
+      storedUser &&
+      storedUser.email === email &&
+      storedUser.password === password
+    ) {
+      login(storedUser);
+
+      navigate("/");
     } else {
       setError("Email sau parolă incorecte!");
     }
@@ -52,7 +61,11 @@ const LoginPage = () => {
           <button type="submit" className={styles.loginButton}>
             Log in
           </button>
-          <button type="button" className={styles.registerButton}>
+          <button
+            type="button"
+            className={styles.registerButton}
+            onClick={() => navigate("/register")}
+          >
             Register
           </button>
         </div>

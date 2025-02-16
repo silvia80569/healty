@@ -1,8 +1,7 @@
-
 .registration {
   width: 100%;
   max-width: 400px;
-  margin:20px;
+  margin: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -25,29 +24,33 @@
 
 .formGroup {
   display: flex;
+  position: relative;
   flex-direction: column;
   margin-bottom: 15px;
   width: 100%;
 }
 
-.input {
+/*.input {
+  all: unset;
+  position: relative;
+  z-index: 100;
   width: 100%;
   padding: 10px;
   border: none;
   border-bottom: 2px solid #e0e0e0;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.1);;
   outline: none;
   font-size: 16px;
   color: white;
 }
-
+/*
 .input::placeholder {
   color: transparent;
-}
+
 
 .input:focus::placeholder {
   color: #aaa;
-}
+}}*/
 
 .buttonContainer {
   display: flex;
@@ -91,8 +94,6 @@
 
 /* Media Query pentru Tableta */
 @media (min-width: 768px) {
- 
-
   .buttonContainer {
     grid-column: span 2;
     display: flex;
@@ -107,8 +108,6 @@
 
 /* Media Query pentru Desktop */
 @media (min-width: 1025px) {
-  
-
   .buttonContainer {
     justify-content: center;
   }

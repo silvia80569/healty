@@ -29,7 +29,7 @@
   width: 100%;
 }
 
-.input {
+/*.input {
   width: 100%;
   padding: 10px;
   border: none;
@@ -47,7 +47,7 @@
 .input:focus::placeholder {
   color: #aaa;
 }
-
+*/
 .buttonContainer {
   display: flex;
   justify-content: space-between;
