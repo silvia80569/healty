@@ -1,18 +1,49 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: #fff;
+  
+}
+
 nav ul {
   display: flex;
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-nav li {
-  margin-right: 20px;
+nav ul li {
+  margin-left: 20px;
 }
 
-nav li a {
+nav ul li a {
   text-decoration: none;
-  color: black;
-  font-weight: bold;
+  color:#9B9FAA;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17.01px;
+  transition: color 0.3s ease;
 }
 
-nav li a:hover {
-  color: blue;
+nav ul li a:hover {
+  color: #212121;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: row;
+   justify-content: space-between;
+  }
+
+  nav ul {
+    flex-direction: row;
+    
+  }
+
+  nav ul li {
+    margin:0 10px ;
+   
+  }
 }
