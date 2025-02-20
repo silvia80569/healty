@@ -20,7 +20,7 @@ const registerUser = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, salt);
 
     // Crearea unui nou utilizator
-    const user = new User({ username, email, password });
+    const user = new User({ username, email, password: hashedPassword });
     await user.save();
 
     // Generarea unui token JWT pentru utilizator

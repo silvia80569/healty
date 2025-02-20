@@ -10,20 +10,24 @@ const {
 
 const router = express.Router();
 
+// Public nutrition information route
+router.get("/public", getPublicNutritionInfo);
+
 /**
  * @swagger
  * /api/nutrition/public:
  *   get:
- *     summary:  Get public nutrition information
- *     description:  Allows retrieving public nutrition information without requiring authentication.
+ *     summary: Get public nutrition information
+ *     description: Allows retrieving public nutrition information without requiring authentication.
  *     responses:
  *       200:
- *         description:  Public nutrition information
+ *         description: Public nutrition information
  *       500:
  *         description: Server error
  */
 
-router.get("/public", getPublicNutritionInfo);
+// Private nutrition information route (authentication required)
+router.get("/private", authenticateToken, getPrivateNutritionInfo);
 
 /**
  * @swagger
@@ -35,21 +39,22 @@ router.get("/public", getPublicNutritionInfo);
  *       - bearerAuth: []
  *     responses:
  *       200:
- *         description:  Private nutrition information
+ *         description: Private nutrition information
  *       401:
  *         description: Invalid authentication token
  *       500:
- *         description:  Server error
+ *         description: Server error
  */
 
-router.get("/private", authenticateToken, getPrivateNutritionInfo);
+// Add product to daily intake route (authentication required)
+router.post("/add-product", authenticateToken, addProductToDailyIntake);
 
 /**
  * @swagger
  * /api/nutrition/add-product:
  *   post:
  *     summary: Add a product to daily intake
- *     description:  Allows authenticated users to add a product to their daily nutrition intake.
+ *     description: Allows authenticated users to add a product to their daily nutrition intake.
  *     security:
  *       - bearerAuth: []
  *     requestBody:
@@ -64,18 +69,20 @@ router.get("/private", authenticateToken, getPrivateNutritionInfo);
  *                 description: ID of the added product
  *               quantity:
  *                 type: number
- *                 description:Consumed quantity
+ *                 description: Consumed quantity
  *     responses:
  *       201:
  *         description: Product successfully added
  *       400:
  *         description: Invalid request
  *       401:
- *         description:  Invalid authentication token
+ *         description: Invalid authentication token
  *       500:
  *         description: Server error
  */
-router.post("/add-product", authenticateToken, addProductToDailyIntake);
+
+// Delete product from daily intake route (authentication required)
+router.delete("/delete-product", authenticateToken, deleteProductFromDailyIntake);
 
 /**
  * @swagger
@@ -105,18 +112,19 @@ router.post("/add-product", authenticateToken, addProductToDailyIntake);
  *       500:
  *         description: Server error
  */
-router.delete(
-  "/delete-product",
-  authenticateToken,
-  deleteProductFromDailyIntake
-);
+
+// Get daily intake info for a specific date (authentication required)
+router.get("/daily/:date", authenticateToken, getDailyIntakeInfo);
 
 /**
  * @swagger
  * /api/nutrition/daily/{date}:
  *   get:
- *     summary:Get daily intake information
- *     description: Allows authenticated users to retrieve information about their daily nutrition intake based on the specified date.
+ *     summary: Get daily intake information
+ *     description: |
+ *       Allows authenticated users to retrieve information about their daily nutrition intake
+ *       based on the specified date.
+ *       The date should be in the format: YYYY-MM-DD.
  *     security:
  *       - bearerAuth: []
  *     parameters:
@@ -129,7 +137,7 @@ router.delete(
  *           example: '2025-02-09'
  *     responses:
  *       200:
- *         description:  Daily intake information
+ *         description: Daily intake information
  *       400:
  *         description: Invalid request
  *       401:
@@ -137,6 +145,6 @@ router.delete(
  *       500:
  *         description: Server error
  */
-router.get("/daily/:date", authenticateToken, getDailyIntakeInfo);
+
 
 module.exports = router;

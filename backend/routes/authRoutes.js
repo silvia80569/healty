@@ -65,9 +65,9 @@ router.post("/login", loginUser);
  * /api/auth/logout:
  *   post:
  *     summary: User logout
- *     description: AlLows a user to log out of the application, invalidating the token.
+ *     description: Allows a user to log out of the application, invalidating the token.
  *     security:
- *       - bearerAuth: []  // If using token-besed authentication
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: User successfully logged out
