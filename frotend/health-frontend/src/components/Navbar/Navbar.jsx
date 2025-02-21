@@ -27,6 +27,9 @@ const Navbar = () => {
             <>
               <li className={styles.userName}>{user.name}</li>
               <li>
+                <Link to="/diary">Diary</Link>
+              </li>
+              <li>
                 <button onClick={handleLogout} className={styles.logoutButton}>
                   Exit
                 </button>

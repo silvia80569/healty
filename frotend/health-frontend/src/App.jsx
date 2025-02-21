@@ -4,7 +4,7 @@ import HomePage from "./pages/HomePage/HomePage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
 import DiaryPage from "./pages/DiaryPage/DiaryPage";
-import PrivateRoute from "./routes/PrivateRoute";
+//import PrivateRoute from "./routes/PrivateRoute";
 
 function App() {
   return (
@@ -14,10 +14,12 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegistrationPage />} />
+        {/*temporar fac aceasta pagina*/}
+        <Route path="/diary" element={<DiaryPage />} />
 
-        <Route element={<PrivateRoute />}>
-          <Route path="/diary" element={<DiaryPage />} />
-        </Route>
+        {/* <Route element={<PrivateRoute />}>
+          <Route path="/privat" element={< />} />
+        </Route> */}
       </Routes>
     </Router>
   );

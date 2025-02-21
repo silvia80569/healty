@@ -27,7 +27,10 @@ const DiaryPage = () => {
         <h1>Daily Food Diary</h1>
         <DiaryDateCalendar />
         <DiaryAddProductForm onAddProduct={addProduct} />
-        <DiaryProductsList product={products} onDeleteProduct={deleteProduct} />
+        <DiaryProductsList
+          products={products}
+          onDeleteProduct={deleteProduct}
+        />
       </div>
     </>
   );

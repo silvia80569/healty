@@ -22,6 +22,11 @@ const AuthProvider = ({ children }) => {
       setToken(storedToken);
       getUserDataFromAPI();
     } else {
+      setUser({
+        id: "123", // ID temporar
+        username: "testuser", // Nume de utilizator temporar
+        name: "Test User", // Nume complet temporar
+      });
       setLoading(false);
     }
   }, []);

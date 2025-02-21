@@ -1,5 +1,6 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
+import styles from "./DiaryAddProductForm.module.css";
 
 const DiaryAddProductForm = ({ onAddProduct }) => {
   const [product, setProduct] = useState("");
@@ -15,18 +16,20 @@ const DiaryAddProductForm = ({ onAddProduct }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className={styles["form-container"]}>
       <input
         type="text"
         placeholder="Product name"
         value={product}
         onChange={(e) => setProduct(e.target.value)}
+        className={styles["input-field"]}
       />
       <input
         type="number"
         placeholder="Calories"
         value={calories}
         onChange={(e) => setCalories(e.target.value)}
+        className={styles["input-field"]}
       />
       <button type="submit">Add Product</button>
     </form>
