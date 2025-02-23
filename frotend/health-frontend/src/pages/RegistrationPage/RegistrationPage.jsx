@@ -5,7 +5,7 @@ import styles from "./RegistrationPage.module.css";
 
 const RegistrationPage = () => {
   const { register, login } = useContext(AuthContext);
-  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const RegistrationPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const newUser = { name, email, password };
+    const newUser = { username, email, password };
 
     const registeredUser = await register(newUser);
     if (registeredUser) {
@@ -27,16 +27,16 @@ const RegistrationPage = () => {
       <h2 className={styles.title}>Registration</h2>
       <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.formGroup}>
-          <label htmlFor="name">Name:</label>
+          <label htmlFor="username">Username:</label>
           <input
             type="text"
-            id="name"
-            name="name"
+            id="username"
+            name="username"
             required
-            value={name}
+            value={username}
             onChange={(e) => {
-              setName(e.target.value);
-              console.log(name);
+              setUsername(e.target.value);
+              console.log(username);
             }}
             className={styles.input}
             autoComplete="name"

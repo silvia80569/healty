@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import {
@@ -6,37 +7,38 @@ import {
   logoutUser,
   getUserData,
 } from "../services/userService";
+import Loader from "../components/Loader/Loader";
+import ErrorAlert from "../components/ErrorAlert/ErrorAlert";
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-
-    if (storedToken) {
-      setToken(storedToken);
-      getUserDataFromAPI();
+    if (token) {
+      getUserDataFromAPI(token);
     } else {
-      setUser({
-        id: "123", // ID temporar
-        username: "testuser", // Nume de utilizator temporar
-        name: "Test User", // Nume complet temporar
-      });
       setLoading(false);
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
-  const getUserDataFromAPI = async () => {
+  const getUserDataFromAPI = async (token) => {
     try {
-      const data = await getUserData();
+      setError(null);
+      const data = await getUserData(token);
       setUser(data);
     } catch (error) {
-      console.error("❌ Error fetching user data:", error.message);
+      console.error("❌ Error fetching user data:", error);
+      setError(
+        error.response?.data?.message ||
+          "Failed to fetch user data. Please try logging in again."
+      );
+      logout();
     } finally {
       setLoading(false);
     }
@@ -44,6 +46,7 @@ const AuthProvider = ({ children }) => {
 
   const login = async (credentials) => {
     try {
+      setError(null);
       const data = await loginUser(credentials);
       setUser(data.user);
       setToken(data.token);
@@ -52,12 +55,17 @@ const AuthProvider = ({ children }) => {
       return data.user;
     } catch (error) {
       console.error("❌ Login error:", error.message);
+      setError(
+        error.response?.data?.message ||
+          "Login failed. Please check your credentials."
+      );
       return null;
     }
   };
 
   const register = async (userData) => {
     try {
+      setError(null);
       const data = await registerUser(userData);
       setUser(data.user);
       setToken(data.token);
@@ -66,6 +74,10 @@ const AuthProvider = ({ children }) => {
       return data.user;
     } catch (error) {
       console.error("❌ Registration error:", error.message);
+      setError(
+        error.response?.data?.message ||
+          "Registration failed. Please try again."
+      );
       return null;
     }
   };
@@ -77,11 +89,12 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("token");
   };
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
     <AuthContext.Provider value={{ user, token, login, register, logout }}>
+      {error && <ErrorAlert message={error} />}
       {children}
     </AuthContext.Provider>
   );
