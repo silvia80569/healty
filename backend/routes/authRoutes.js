@@ -3,6 +3,7 @@ const {
   registerUser,
   loginUser,
   logoutUser,
+  getUserProfile
 } = require("../controllers/authController");
 const authenticateToken = require("../midddlewares/authenticateToken.js");
 
@@ -76,5 +77,23 @@ router.post("/login", loginUser);
  */
 
 router.post("/logout", authenticateToken, logoutUser);
+
+/**
+ * @swagger
+ *  /api/auth/user:
+ *   get:
+ *     summary: Obține informațiile utilizatorului
+ *     description: Returnează datele utilizatorului autentificat.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Informațiile utilizatorului au fost returnate cu succes.
+ *       401:
+ *         description: Neautorizat.
+ */
+
+router.get("/user", authenticateToken, getUserProfile);
+
 
 module.exports = router;

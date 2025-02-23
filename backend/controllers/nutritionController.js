@@ -1,6 +1,6 @@
-const Nutrition = require('../models/nutritionModel');
-const DailyIntake = require('../models/dailyIntakeModel');
-const User = require('../models/userModel');
+const Nutrition = require("../models/nutritionModel");
+const DailyIntake = require("../models/dailyIntakeModel");
+const User = require("../models/userModel");
 
 const getPublicNutritionInfo = async (req, res) => {
   try {
@@ -23,7 +23,9 @@ const getPrivateNutritionInfo = async (req, res) => {
     }
 
     // Obține aportul zilnic pentru utilizatorul autentificat
-    const dailyIntake = await DailyIntake.find({ user: userId }).populate('products.productId');
+    const dailyIntake = await DailyIntake.find({ user: userId }).populate(
+      "products.productId"
+    );
 
     res.status(200).json(dailyIntake);
   } catch (error) {
@@ -45,7 +47,12 @@ const addProductToDailyIntake = async (req, res) => {
     let dailyIntake = await DailyIntake.findOne({ date, user: userId });
 
     if (!dailyIntake) {
-      dailyIntake = new DailyIntake({ date, user: userId, kcal: 0, products: [] });
+      dailyIntake = new DailyIntake({
+        date,
+        user: userId,
+        kcal: 0,
+        products: [],
+      });
     }
 
     dailyIntake.products.push({ productId, calories });
@@ -69,9 +76,13 @@ const deleteProductFromDailyIntake = async (req, res) => {
       return res.status(404).json({ message: "No daily intake record found" });
     }
 
-    const productIndex = dailyIntake.products.findIndex(p => p.productId.toString() === productId);
+    const productIndex = dailyIntake.products.findIndex(
+      (p) => p.productId.toString() === productId
+    );
     if (productIndex === -1) {
-      return res.status(404).json({ message: "Product not found in daily intake" });
+      return res
+        .status(404)
+        .json({ message: "Product not found in daily intake" });
     }
 
     dailyIntake.kcal -= dailyIntake.products[productIndex].calories;
@@ -81,7 +92,9 @@ const deleteProductFromDailyIntake = async (req, res) => {
     res.status(200).json(dailyIntake);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error deleting product from daily intake" });
+    res
+      .status(500)
+      .json({ message: "Error deleting product from daily intake" });
   }
 };
 
@@ -91,9 +104,14 @@ const getDailyIntakeInfo = async (req, res) => {
     const userId = req.user.id;
 
     // Căutăm aportul zilnic pentru utilizatorul respectiv pe data dată
-    const dailyIntake = await DailyIntake.findOne({ date, user: userId }).populate('products.productId');
+    const dailyIntake = await DailyIntake.findOne({
+      date,
+      user: userId,
+    }).populate("products.productId");
     if (!dailyIntake) {
-      return res.status(404).json({ message: "No daily intake data found for this date" });
+      return res
+        .status(404)
+        .json({ message: "No daily intake data found for this date" });
     }
 
     res.status(200).json(dailyIntake);
@@ -108,5 +126,5 @@ module.exports = {
   getPrivateNutritionInfo,
   addProductToDailyIntake,
   deleteProductFromDailyIntake,
-  getDailyIntakeInfo
+  getDailyIntakeInfo,
 };
