@@ -1,43 +1,72 @@
-import { useState } from "react";
 import PropTypes from "prop-types";
+import styles from "./CalculatorForm.module.css";
 
-// eslint-disable-next-line react/prop-types
-const CalculatorForm = ({ onAddProduct }) => {
-  const [product, setProduct] = useState("");
-  const [calories, setCalories] = useState("");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!product.trim() || !calories.trim()) return;
-
-    const parsedCalories = parseInt(calories, 10);
-    if (isNaN(parsedCalories) || parsedCalories <= 0) return;
-
-    onAddProduct({ name: product, calories: parseInt(calories) });
-    setProduct("");
-    setCalories("");
-  };
-
+const CalculatorForm = ({ formData, handleChange, handleSubmit }) => {
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Product Name"
-        value={product}
-        onChange={(e) => setProduct(e.target.value)}
-      />{" "}
+    <form onSubmit={handleSubmit} className={styles.calculatorForm}>
       <input
         type="number"
-        placeholder="Calories"
-        value={calories}
-        onChange={(e) => setCalories(e.target.value)}
+        name="height"
+        placeholder="Height *"
+        value={formData.height}
+        onChange={handleChange}
       />
-      <button type="submit">+</button>
+      <input
+        type="number"
+        name="currentWeight"
+        placeholder="Current weight *"
+        value={formData.currentWeight}
+        onChange={handleChange}
+      />
+
+      <input
+        type="number"
+        name="desiredWeight"
+        placeholder="Desired weight *"
+        value={formData.desiredWeight}
+        onChange={handleChange}
+      />
+
+      <input
+        type="number"
+        name="age"
+        placeholder="Age *"
+        value={formData.age}
+        onChange={handleChange}
+      />
+
+      <div className={styles.bloodType}>
+        <label>Blood type *</label>
+        {[1, 2, 3, 4].map((type) => (
+          <label key={type}>
+            <input
+              type="radio"
+              name="bloodType"
+              value={type}
+              checked={formData.bloodType === String(type)}
+              onChange={handleChange}
+            />
+            {type}
+          </label>
+        ))}
+      </div>
+      <button type="submit" className={styles.submitButton}>
+        Start losing weight
+      </button>
     </form>
   );
 };
 
-CalculatorForm.PropTypes = {
-  onAddProduct: PropTypes.func.isRequired,
+CalculatorForm.propTypes = {
+  formData: PropTypes.shape({
+    height: PropTypes.string.isRequired,
+    currentWeight: PropTypes.string.isRequired,
+    desiredWeight: PropTypes.string.isRequired,
+    age: PropTypes.string.isRequired,
+    bloodType: PropTypes.string.isRequired,
+  }).isRequired,
+  handleChange: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
+
 export default CalculatorForm;

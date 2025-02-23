@@ -1,5 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./CalculatorPage.module.css";
+import api from "../../services/api";
+import CalculatorForm from "../../components/CalculatorForm/CalculatorForm";
+import CalculatorResult from "../../components/CalculatorResult/CalculatorResult";
+import SummarySection from "../../components/SummarySection/SummarySection";
+import Loader from "../../components/Loader/Loader";
+import ErrorAlert from "../../components/ErrorAlert/ErrorAlert";
 
 const CalculatorPage = () => {
   const [formData, setFormData] = useState({
@@ -10,78 +16,75 @@ const CalculatorPage = () => {
     bloodType: "1",
   });
 
+  const [result] = useState({
+    date: new Date().toLocaleDateString(),
+    left: 0,
+    consumed: 0,
+    dailyRate: 0,
+    normalPercentage: 0,
+    normalKcal: 0,
+  });
+
+  const [recommendedFoods, setRecommendedFoods] = useState([]);
+  const [, setCalorieLog] = useState([]);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {}, []);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Calculating daily calorie intake with:", formData);
+
+    const today = new Date().toLocaleDateString();
+    const newResult = {
+      ...result,
+      date: today,
+      left: 2000,
+      consumed: 1500,
+      dailyRate: 1800,
+      normalPercentage: 80,
+      normalKcal: 1440,
+    };
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await api.post("/api/calorie-log", newResult);
+
+      setCalorieLog((prevLog) => [...prevLog, newResult]);
+
+      setRecommendedFoods(["Soda", "Fast food", "Candy"]);
+    } catch (error) {
+      setError("Failed to save calorie log.");
+      console.error("Error saving calorie log:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
   return (
     <div>
       <div className={styles.formSection}>
         <h1>Calculate your daily calorie intake right now</h1>
-        <form onSubmit={handleSubmit} className={styles.calculatorForm}>
-          <input
-            type="number"
-            name="height"
-            placeholder="Height *"
-            value={formData.height}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="currentWeight"
-            placeholder="Current weight *"
-            value={formData.currentWeight}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="desiredWeight"
-            placeholder="Desired weight *"
-            value={formData.desiredWeight}
-            onChange={handleChange}
-          />
-          <input
-            type="number"
-            name="age"
-            placeholder="Age *"
-            value={formData.age}
-            onChange={handleChange}
-          />
-          <div className={styles.bloodType}>
-            <label>Blood type *</label>
-            {[1, 2, 3, 4].map((type) => (
-              <label key={type}>
-                <input
-                  type="radio"
-                  name="bloodType"
-                  value={type}
-                  checked={formData.bloodType === String(type)}
-                  onChange={handleChange}
-                />
-                {type}
-              </label>
-            ))}
-          </div>
-          <button type="submit" className={styles.submitButton}>
-            Start losing weight
-          </button>
-        </form>
+        <CalculatorForm
+          formData={formData}
+          handleChange={handleChange}
+          handleSubmit={handleSubmit}
+        />
       </div>
-      <div className={styles.summarySection}>
-        <h3>Summary for 13.08.2023</h3>
-        <p>Left: 000 kcal</p>
-        <p>Consumed: 000 kcal</p>
-        <p>Daily rate: 000 kcal</p>
-        <p>n% of normal: 000 kcal</p>
-        <h4>Food not recommended</h4>
-        <p>Your diet will be displayed here</p>
-      </div>
+
+      {isLoading && <Loader />}
+      {error && <ErrorAlert message={error} />}
+      <CalculatorResult result={result} />
+      <SummarySection recommendedFoods={recommendedFoods} />
     </div>
   );
 };
-
 export default CalculatorPage;
